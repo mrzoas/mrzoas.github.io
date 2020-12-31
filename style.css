@@ -1,0 +1,48 @@
+body { 
+  display: grid;
+  grid-template-areas: 
+    "panel1 panel2"
+    "panel3 panel4";
+  grid-template-columns: 14em 1fr;
+  grid-gap: 1em;
+  margin: 0;
+  background: #eee;
+  }
+.content {
+  padding: 0em 2em 1em 2em;
+  background: #afc1da;
+}
+#pagePanel1 {
+  grid-area: panel1;
+}
+#pagePanel2 {
+  grid-area: panel2;
+}
+#pagePanel3 { 
+  grid-area: panel3;      
+}
+#pagePanel4 { 
+  grid-area: panel4; 
+}
+button, select {
+  font-size: large;
+  background: #0000;
+  padding: 0.3em;
+  margin-bottom: 0.2em;
+  border: 2px solid #000;
+  cursor: pointer;
+  opacity: 0.6;
+}
+button {
+  min-width: 8.8em;
+}
+button:hover, select:hover {
+  background: rgb(134, 221, 199);
+  opacity: 1;
+}
+button:active {
+  transform: translateY(3px);
+}
+select {
+  width: 8.8em;
+}
