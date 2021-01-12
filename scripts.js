@@ -212,6 +212,33 @@ const LIS = [
   {octave: 5, note: 'C'},  {octave: -1, note: ''},
 ];
 
+const HappyBirthday = [
+  {octave: 5, note: 'C'},  {octave: 5, note: 'C'},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'}, {octave: -1, note: ''},  {octave: 5, note: 'F'},  {octave: -1, note: ''},
+  {octave: 5, note: 'E'},  {octave: -1, note: ''}, {octave: -1, note: ''}, {octave: -1, note: ''},
+  {octave: 5, note: 'C'}, {octave: 5, note: 'C'},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'},  {octave: -1, note: ''},  {octave: 5, note: 'G'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'}, {octave: -1, note: ''},  {octave: -1, note: ''},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'},  {octave: 5, note: 'C'},  {octave: 6, note: 'C'},  {octave: -1, note: ''},
+  {octave: 5, note: 'A'}, {octave: -1, note: ''},  {octave: 5, note: 'F'},  {octave: -1, note: ''},
+  {octave: 5, note: 'E'},  {octave: -1, note: ''},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'A#'}, {octave: 5, note: 'A#'},  {octave: 5, note: 'A'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'},  {octave: -1, note: ''},  {octave: 5, note: 'G'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'}, {octave: -1, note: ''},  {octave: -1, note: ''},  {octave: -2, note: ''},
+
+  {octave: 5, note: 'C'},  {octave: 5, note: 'C'},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'}, {octave: -1, note: ''},  {octave: 5, note: 'F'},  {octave: -1, note: ''},
+  {octave: 5, note: 'E'},  {octave: -1, note: ''}, {octave: -1, note: ''}, {octave: -1, note: ''},
+  {octave: 5, note: 'C'}, {octave: 5, note: 'C'},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'},  {octave: -1, note: ''},  {octave: 5, note: 'G'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'}, {octave: -1, note: ''},  {octave: -1, note: ''},  {octave: -1, note: ''},
+  {octave: 5, note: 'C'},  {octave: 5, note: 'C'},  {octave: 6, note: 'C'},  {octave: -1, note: ''},
+  {octave: 5, note: 'A'}, {octave: -1, note: ''},  {octave: 5, note: 'F'},  {octave: -1, note: ''},
+  {octave: 5, note: 'E'},  {octave: -1, note: ''},  {octave: 5, note: 'D'},  {octave: -1, note: ''},
+  {octave: 5, note: 'A#'}, {octave: 5, note: 'A#'},  {octave: 5, note: 'A'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'},  {octave: -1, note: ''},  {octave: 5, note: 'G'},  {octave: -1, note: ''},
+  {octave: 5, note: 'F'}, {octave: -1, note: ''},  {octave: -1, note: ''},  {octave: -2, note: ''},
+];
 
 UserMap = new Map();
 UserMap.set('R',   {octave: 5, note: 'F'});
@@ -297,6 +324,20 @@ LISMap.set('B\'', {octave: 3, note: 'A'});
 LISMap.set('F',   {octave: 2, note: 'G'});
 LISMap.set('F\'', {octave: 2, note: 'F#'});
 
+HappyMap = new Map();
+HappyMap.set('R',   {octave: 5, note: 'D'});
+HappyMap.set('R\'', {octave: 5, note: 'A#'});
+HappyMap.set('L',   {octave: 6, note: 'C'});
+HappyMap.set('L\'', {octave: 5, note: 'E'});
+HappyMap.set('U',   {octave: 5, note: 'C'});
+HappyMap.set('U\'', {octave: 5, note: 'F'});
+HappyMap.set('D',   {octave: 5, note: 'A'});
+HappyMap.set('D\'', {octave: 5, note: 'G'});
+HappyMap.set('B',   {octave: 3, note: 'F#'});
+HappyMap.set('B\'', {octave: 3, note: 'A'});
+HappyMap.set('F',   {octave: 2, note: 'G'});
+HappyMap.set('F\'', {octave: 2, note: 'F#'});
+
 const songsMap = new Map();
 songsMap.set('user', { name: "Своя мелодия", var: UserSong, map: UserMap });
 songsMap.set('JingleBells', { name: "Jingle Bells", var: JingleBells, map: JingleBellsMap });
@@ -305,6 +346,8 @@ songsMap.set('XmasTree', { name: "В лесу родилась ёлочка", va
 songsMap.set('WishYou', { name: "We Wish You a Merry Christmas", var: WeWishYouAMerryChristmas, map: WishYouMap });
 songsMap.set('test1', { name: "Угадай мелодию 1", var: AIWFCIY, map: AIWFCIYMap });
 songsMap.set('test2', { name: "Угадай мелодию 2", var: LIS, map: LISMap });
+
+songsMap.set('happy', { name: "Happy Birthday", var: HappyBirthday, map: HappyMap });
 
 /* Конец секции глобальных переменных */
 
