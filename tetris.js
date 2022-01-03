@@ -5,8 +5,8 @@ let field = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,5,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
@@ -60,6 +60,7 @@ function initVideo(videoDevices) {
 
 
 function init() {
+
   // video = document.getElementById("video");
   // video.width = document.body.clientWidth;
   // video.height = document.body.clientHeight;
@@ -114,6 +115,8 @@ function onKeyDown(event) {
     moveRight(currentFigure);
   } else if (event.key == 'ArrowDown') {
     moveDown(currentFigure);
+  } else if (event.key == 'ArrowUp') {
+    turnLeft(currentFigure);
   }
 }
 
@@ -150,7 +153,7 @@ function onOrientationChange(event) {
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     let dDir = direction - Math.floor(event.alpha / 360 * fieldWidth);
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    moveFigure(currentFigure, -dDir);
+    moveFigure(currentFigure, dDir);
     document.getElementById("div").innerHTML = "             direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
@@ -161,23 +164,89 @@ function onOrientationChange(event) {
 
 let figures = [
   [
+    [      [1,1,1],      [1,0,0]    ],
+    [      [1,1],      [0,1],      [0,1]    ],
+    [      [0,0,1],      [1,1,1]    ],
+    [      [1,0],      [1,0],      [1,1]    ]
+  ],
+  [
     [
-      [1,1,1],
-      [1,0,0]
+      [1,0,0],
+      [1,1,1]
     ],
     [
       [1,1],
+      [1,0],
+      [1,0]
+    ],
+    [
+      [1,1,1],
+      [0,0,1]
+    ],
+    [
+      [0,1],
+      [0,1],
+      [1,1]
+    ]
+  ],
+  [
+    [
+      [1,1],
+      [1,1]
+    ]
+  ],
+  [
+    [
+      [0,1],
+      [0,1],
       [0,1],
       [0,1]
     ],
     [
-      [0,0,1],
+      [0,0,0,0],
+      [1,1,1,1]
+    ]
+  ],
+  [
+    [
+      [0,1,0],
       [1,1,1]
     ],
     [
       [1,0],
+      [1,1],
+      [1,0]
+    ],
+    [
+      [1,1,1],
+      [0,1,0]
+    ],
+    [
+      [0,1],
+      [1,1],
+      [0,1]
+    ]
+  ],
+  [
+    [
+      [1,1,0],
+      [0,1,1]
+    ],
+    [
+      [0,1],
+      [1,1],
+      [1,0]
+    ]
+  ],
+  [
+    [
+      [0,1,1],
+      [1,1,0]
+    ],
+    [
       [1,0],
-      [1,1]
+      [1,1],
+      [0,1]
     ]
   ]
 ];
@@ -185,7 +254,8 @@ let figures = [
 let currentFigure = {
   x : 0,
   y : 0,
-  figureType : 7,
+  figureType : 0,
+  blockType : 0,
   block : figures[0][0]
 }
 
@@ -203,10 +273,24 @@ function moveRight(figure, step = 1) {
     moveFigure(figure, -step);
 }
 
-function turnLeft(fugure) {
-  
-  if (checkPosition(figure) != true)
-    moveFigure(figure, -step);
+function turnLeft(figure) {
+  figure.blockType = (figure.blockType - 1 + figures[figure.figureType].length) % figures[figure.figureType].length;
+  figure.block = figures[figure.figureType][figure.blockType];
+  if (checkPosition(figure) != true) {
+    figure.blockType = (figure.blockType + 1) % figures[fugure.figureType].length;
+    figure.block = figures[figure.figureType][figure.blockType];
+  }
+  window.requestAnimationFrame(drawStuff);
+}
+
+function turnRight(figure) {
+  figure.blockType = (figure.blockType + 1) % figures[figure.figureType].length;
+  figure.block = figures[figure.figureType][figure.blockType];
+  if (checkPosition(figure) != true) {
+    figure.blockType = (figure.blockType - 1 + figures[figure.figureType].length) % figures[fugure.figureType].length;
+    figure.block = figures[figure.figureType][figure.blockType];
+  }
+  window.requestAnimationFrame(drawStuff);
 }
 
 function moveDown(figure, step = 1) {
@@ -234,6 +318,13 @@ function checkPosition(figure) {
   return true;
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+
 function stop(figure) {
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
@@ -241,19 +332,14 @@ function stop(figure) {
       let y = currentFigure.y + row;
       x %= fieldWidth;
       if (currentFigure.block[row][column] != 0)
-        field[y][x] = currentFigure.figureType;
+        field[y][x] = currentFigure.figureType + 1;
     }
   }
-  currentFigure = {
-    x : 0,
-    y : 0,
-    figureType : 7,
-    block : [
-      [0, 0, 1],
-      [1, 1, 1],
-      [0, 0, 0]
-    ]
-  };
+  currentFigure.x = 0;
+  currentFigure.y = 0;
+  currentFigure.figureType = getRandomInt(0, figures.length);
+  currentFigure.blockType = 0;
+  currentFigure.block = figures[currentFigure.figureType][0];
   window.requestAnimationFrame(drawStuff);
 }
 
@@ -272,7 +358,7 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      let cellType = field[row][(column + direction + fieldWidth) % fieldWidth];
+      let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
