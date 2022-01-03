@@ -150,7 +150,7 @@ function onOrientationChange(event) {
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     let dDir = direction - Math.floor(event.alpha / 360 * fieldWidth);
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    moveFigure(currentFigure, dDir);
+    moveFigure(currentFigure, -dDir);
     document.getElementById("div").innerHTML = "             direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
@@ -243,7 +243,7 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
+      let cellType = field[row][(column + direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
