@@ -91,7 +91,7 @@ function onOrientationChange(event) {
     orient.gamma = event.gamma;
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    document.getElementById("div").innerHTML = direction;
+    document.getElementById("div").innerHTML = "             direction: " + direction;
     drawStuff();
   }
   
@@ -109,7 +109,7 @@ function drawStuff() {
       } else {
         context.fillStyle = "rgba(30,50,200,0.5)";
       }
-      context.fillRect(shift * column + column * blockSize, shift * row + row * blockSize, blockSize, blockSize);
+      context.fillRect(shift * column + column * blockSize, blockSize / 2 + shift * row + row * blockSize, blockSize, blockSize);
     }
   }
   

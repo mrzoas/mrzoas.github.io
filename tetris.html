@@ -34,9 +34,9 @@
   <video id="video" autoplay></video>
   <canvas id="canvas"></canvas>
   <div id="div"></div>
-  <input type="button" style="width: 128px; height: 64px;" onclick="toggleFullScreen(); document.getElementsByTagName('input')[0].style.display = 'none';" value="Развернуть"/>
+  <input type="button" style="width: 128px;" onclick="toggleFullScreen();" value="Развернуть"/>
 
-  <!-- <script>
+  <script>
     //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
     if(navigator.webkitGetUserMedia!=null) { 
       
@@ -58,7 +58,7 @@
     } else {
       alert("Без SSL документ не может получить доступ к веб-камере");
     }
-  </script> -->
+  </script>
 
 </body>
 
