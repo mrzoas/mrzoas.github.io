@@ -52,7 +52,7 @@
         console.log(err.name + ": " + err.message);
       });
 
-      var constraints = { video : { deviceId: videoDevices[0] } };
+      var constraints = { video : { deviceId: videoDevices[1] } };
 
       navigator.mediaDevices.getUserMedia(constraints)
       .then(function(mediaStream) {

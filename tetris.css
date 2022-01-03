@@ -23,6 +23,12 @@ video {
 
 canvas {
   z-index: 100;
+}
+
+input {
+  z-index: 200;
   display: block;
   position: absolute;
+  right: 0px;
+  top: 0px;
 }

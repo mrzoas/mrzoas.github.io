@@ -56,10 +56,19 @@ function init() {
   window.addEventListener('resize', resizeCanvas);
   window.addEventListener('devicemotion', onMotionChange);
   window.addEventListener('deviceorientation', onOrientationChange);
+  document.addEventListener('keydown', onKeyDown);
   document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
   
 
   resizeCanvas();
+}
+
+function onKeyDown(event) {
+  if (event.key == 'ArrowLeft') {
+    moveLeft(currentFigure);
+  } else if (event.key == 'ArrowRight') {
+    moveRight(currentFigure);
+  }
 }
 
 
@@ -100,6 +109,33 @@ function onOrientationChange(event) {
   
 }
 
+let currentFigure = {
+  x : 0,
+  y : 0,
+  figureType : 7,
+  block : [
+    [0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 0]
+  ]
+}
+
+function moveLeft(figure, step = 1) {
+  moveFigure(figure, -step);
+}
+
+function moveRight(figure, step = 1) {
+  moveFigure(figure, step);
+}
+
+function moveFigure(figure, step) {
+  figure.x += step;
+  if (figure.x < 0) figure.x += fieldWidth;
+  figure.x %= fieldWidth;
+  window.requestAnimationFrame(drawStuff);
+}
+
+
 
 function drawStuff() {
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -108,6 +144,9 @@ function drawStuff() {
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
+      if (currentFigure.x == column && currentFigure.y == row)
+        cellType = currentFigure.fugureType;
+
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
@@ -118,7 +157,6 @@ function drawStuff() {
         else if (cellType == 5) context.fillStyle = "rgba(60,90,120,0.5)";
         else if (cellType == 6) context.fillStyle = "rgba(30,170,40,0.5)";
         else if (cellType == 7) context.fillStyle = "rgba(180,200,70,0.5)";
-
       }
       context.fillRect(shift * column + column * blockSize, 16 + shift * row + row * blockSize, blockSize, blockSize);
     }
