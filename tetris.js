@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 10;
+let viewWidth = 20;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -151,9 +151,10 @@ function onOrientationChange(event) {
     orient.beta = event.beta;
     orient.gamma = event.gamma;
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
-    let dDir = direction - Math.floor(event.alpha / 360 * fieldWidth);
+    let dDir = Math.floor(event.alpha / 360 * fieldWidth) - direction;
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    moveFigure(currentFigure, 0);
+    if (dDir < 0) moveLeft(currentFigure, -dDir);
+    if (dDir > 0) moveRight(currentFigure, dDir);
     document.getElementById("div").innerHTML = "_______direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
