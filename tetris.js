@@ -89,7 +89,7 @@ function onOrientationChange(event) {
     orient.beta = event.beta;
     orient.gamma = event.gamma;
     document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
-    direction = event.alpha;
+    direction = Math.floor(event.alpha / fieldWidth);
     
     drawStuff();
   }
@@ -102,7 +102,7 @@ function drawStuff() {
   
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      if (field[row][Math.floor((column + direction) / viewWidth)] == "0") {
+      if (field[row][(column + direction + viewWidth) % viewWidth] == "0") {
         context.fillStyle = "rgba(200,200,100,0.3)";
       } else {
         context.fillStyle = "rgba(100,100,200,0.2)";
