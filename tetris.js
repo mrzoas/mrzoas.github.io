@@ -81,16 +81,14 @@ function onMotionChange(e) {
 
 function onOrientationChange(event) {
   if (
-    Math.abs(orient.alpha - event.alpha) > 10 ||
-    Math.abs(orient.beta - event.beta) > 10 ||
-    Math.abs(orient.gamma - event.gamma) > 10
+    Math.abs(orient.alpha - event.alpha) > 10
   ) {
     orient.alpha = event.alpha;
     orient.beta = event.beta;
     orient.gamma = event.gamma;
-    document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
+    //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     direction = Math.floor(event.alpha / fieldWidth);
-    
+    document.getElementById("div").innerHTML = direction;
     drawStuff();
   }
   
@@ -98,11 +96,12 @@ function onOrientationChange(event) {
 
 
 function drawStuff() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
   let shift = blockMargin;
-  
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      if (field[row][(column + direction + viewWidth) % viewWidth] == "0") {
+      if (field[row][(column + direction + fieldWidth) % fieldWidth] == "0") {
         context.fillStyle = "rgba(200,200,100,0.3)";
       } else {
         context.fillStyle = "rgba(100,100,200,0.2)";
