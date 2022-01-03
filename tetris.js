@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  if (navigator.webkitGetUserMedia!=null) {
+  // if (navigator.webkitGetUserMedia!=null) {
     
-    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-      let videoDevices = [];
-      devices.forEach(function(device) {
-        if (device.kind == "videoinput")
-          videoDevices.push(device.deviceId);
-      });
-      initVideo(videoDevices);
-    })
-    .catch(function(err) {
-      console.log(err.name + ": " + err.message);
-    });
-  } else {
-      alert("Без SSL документ не может получить доступ к веб-камере");
-  }
+  //   navigator.mediaDevices.enumerateDevices()
+  //   .then(function(devices) {
+  //     let videoDevices = [];
+  //     devices.forEach(function(device) {
+  //       if (device.kind == "videoinput")
+  //         videoDevices.push(device.deviceId);
+  //     });
+  //     initVideo(videoDevices);
+  //   })
+  //   .catch(function(err) {
+  //     console.log(err.name + ": " + err.message);
+  //   });
+  // } else {
+  //     alert("Без SSL документ не может получить доступ к веб-камере");
+  // }
 
   
   
@@ -150,8 +150,9 @@ function onOrientationChange(event) {
     orient.alpha = event.alpha;
     orient.beta = event.beta;
     orient.gamma = event.gamma;
-    //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
+    
     let dDir = Math.floor(event.alpha / 360 * fieldWidth) - direction;
+    
     direction = Math.floor(event.alpha / 360 * fieldWidth);
     if (dDir < 0) {
       while (dDir != 0) {
@@ -170,7 +171,8 @@ function onOrientationChange(event) {
       }
     }
 
-    document.getElementById("div").innerHTML = "_______direction: " + direction;
+    document.getElementById("div").innerHTML = "alpha=" + Math.round(event.alpha) + "<br>beta=" + Math.round(event.beta) + "<br>gamma=" + Math.round(event.gamma);
+    //document.getElementById("div").innerHTML = "_______direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
   
@@ -357,7 +359,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.9)";
+        context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
