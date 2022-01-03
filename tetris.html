@@ -34,14 +34,25 @@
   <video id="video" autoplay></video>
   <canvas id="canvas"></canvas>
   <div id="div"></div>
-  <!-- <input type="button" style="width: 128px;" onclick="toggleFullScreen();" value="Развернуть"/> -->
+  <input type="button" style="width: 128px;" onclick="toggleFullScreen();" value="Развернуть"/>
 
   <script>
     //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
     if(navigator.webkitGetUserMedia!=null) { 
       
-      //var constraints = { facingMode: { exact: "environment" } };
-      var constraints = { deviceId: 0 };
+      let videoDevices = [];
+      navigator.mediaDevices.enumerateDevices()
+      .then(function(devices) {
+        devices.forEach(function(device) {
+          if (device.kind == "videoinput")
+            videoDevices.push(device.deviceId);
+        });
+      })
+      .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+      });
+
+      var constraints = { video : { deviceId: videoDevices[0] } };
 
       navigator.mediaDevices.getUserMedia(constraints)
       .then(function(mediaStream) {
