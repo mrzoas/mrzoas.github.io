@@ -1,10 +1,10 @@
 let field = "" +
-"000000000111100000000011000000000000:" +
-"010000000000000000000001000000000000:" +
-"000000000000000000000001000000000000:" +
-"000000000000000000000001000000101100:" +
-"111110000000000000010001000000000000:" +
-"110000000000000000011111000000000000:" +
+"111111000111111010000011000001011000:" +
+"011111000111110001000001000010111000:" +
+"001111000111100000100001000100011000:" +
+"000111000111000000010001111100101100:" +
+"000011000110000000010001000000000000:" +
+"110001111100000000011111000000000000:" +
 "100100000000000000011111000000000000:" +
 "111110000000000000010001000000000000:" +
 "111110000000000000011111000000000000:" +
@@ -90,7 +90,7 @@ function onOrientationChange(event) {
     orient.beta = event.beta;
     orient.gamma = event.gamma;
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
-    direction = Math.floor(event.alpha / fieldWidth);
+    direction = Math.floor(event.alpha / 360 * fieldWidth);
     document.getElementById("div").innerHTML = direction;
     drawStuff();
   }
@@ -105,9 +105,9 @@ function drawStuff() {
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
       if (field[row][(column + direction + fieldWidth) % fieldWidth] == "0") {
-        context.fillStyle = "rgba(200,200,100,0.3)";
+        context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
-        context.fillStyle = "rgba(100,100,200,0.2)";
+        context.fillStyle = "rgba(30,50,200,0.5)";
       }
       context.fillRect(shift * column + column * blockSize, shift * row + row * blockSize, blockSize, blockSize);
     }

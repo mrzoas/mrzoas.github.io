@@ -6,6 +6,8 @@
 html, body {
   width:100%;
   height:100%;
+  overflow: hidden;
+  
 } /* just to be sure these are full screen*/
 
 canvas, video, div {
@@ -14,3 +16,9 @@ canvas, video, div {
   left: 0;
   top: 0;
 } /* To remove the scrollbars */
+
+input {
+  z-index: 100;
+  display: block;
+  position: absolute;
+}
