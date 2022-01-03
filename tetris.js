@@ -374,7 +374,7 @@ function drawStuff() {
   }
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
-      let x = currentFigure.x + column;
+      let x = currentFigure.x + column - direction;
       let y = currentFigure.y + row;
       x %= fieldWidth;
       context.fillStyle = "rgba(100,200,240,0.9)";
