@@ -157,16 +157,39 @@ function onOrientationChange(event) {
   
 }
 
+
+
+let figures = [
+  [
+    [
+      [1,1,1],
+      [1,0,0]
+    ],
+    [
+      [1,1],
+      [0,1],
+      [0,1]
+    ],
+    [
+      [0,0,1],
+      [1,1,1]
+    ],
+    [
+      [1,0],
+      [1,0],
+      [1,1]
+    ]
+  ]
+];
+
 let currentFigure = {
   x : 0,
   y : 0,
   figureType : 7,
-  block : [
-    [0, 0, 1],
-    [1, 1, 1],
-    [0, 0, 0]
-  ]
+  block : figures[0][0]
 }
+
+
 
 function moveLeft(figure, step = 1) {
   moveFigure(figure, -step);
@@ -176,6 +199,12 @@ function moveLeft(figure, step = 1) {
 
 function moveRight(figure, step = 1) {
   moveFigure(figure, step);
+  if (checkPosition(figure) != true)
+    moveFigure(figure, -step);
+}
+
+function turnLeft(fugure) {
+  
   if (checkPosition(figure) != true)
     moveFigure(figure, -step);
 }
