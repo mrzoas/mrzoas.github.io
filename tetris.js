@@ -1,25 +1,26 @@
-let field = "" +
-"111111000111111010000011000001011000:" +
-"011111000111110001000001000010111000:" +
-"001111000111100000100001000100011000:" +
-"000111000111000000010001111100101100:" +
-"000011444110006660010001000000000000:" +
-"110001331000006000011111000000000000:" +
-"123456733234567000022221012345676543:" +
-"111110000000000000010001000005555000:" +
-"111110006000020000511111000033666000:" +
-"111110006000220000511111000003360000:" +
-"001010006000023344511111000022000000:" +
-"100110006666600000510001006002000000:" +
-"111110000000700000511111006332000000:" +
-"111110000000705555511111006633000000:" +
-"100010000000700000010001000000000000:" +
-"000001111000001000100000000000000000:" +
-"000000000000001000000100000000000000:" +
-"000000000000001000000000011000000000:" +
-"000000000000001000000000000000000000:" +
-"000000000000011100000000000000000000";
-field = field.split(":");
+let field = [
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+];
+
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
 let viewWidth = 10;
@@ -61,6 +62,13 @@ function init() {
   
 
   resizeCanvas();
+
+  Tick();
+}
+
+function Tick() {
+  moveDown(currentFigure);
+  setTimeout(Tick, 1000);
 }
 
 function onKeyDown(event) {
@@ -68,6 +76,8 @@ function onKeyDown(event) {
     moveLeft(currentFigure);
   } else if (event.key == 'ArrowRight') {
     moveRight(currentFigure);
+  } else if (event.key == 'ArrowDown') {
+    moveDown(currentFigure);
   }
 }
 
@@ -122,10 +132,60 @@ let currentFigure = {
 
 function moveLeft(figure, step = 1) {
   moveFigure(figure, -step);
+  if (checkPosition(figure) != true)
+    moveFigure(figure, step);
 }
 
 function moveRight(figure, step = 1) {
   moveFigure(figure, step);
+  if (checkPosition(figure) != true)
+    moveFigure(figure, -step);
+}
+
+function moveDown(figure, step = 1) {
+  figure.y += 1;
+  if (checkPosition(figure) != true) {
+    figure.y -= 1;
+    stop(figure);
+  }    
+  window.requestAnimationFrame(drawStuff);
+}
+
+function checkPosition(figure) {
+  for (let row = 0; row < currentFigure.block.length; row++) {
+    for (let column = 0; column < currentFigure.block[0].length; column++) {
+      let x = currentFigure.x + column;
+      let y = currentFigure.y + row;
+      x %= fieldWidth;
+      if (field[x][y] != 0 && currentFigure.block[row][column] != 0)
+        return false;
+      if (y >= fieldHeight && currentFigure.block[row][column] != 0)
+        return false;
+    }
+  }
+  return true;
+}
+
+function stop(figure) {
+  for (let row = 0; row < currentFigure.block.length; row++) {
+    for (let column = 0; column < currentFigure.block[0].length; column++) {
+      let x = currentFigure.x + column;
+      let y = currentFigure.y + row;
+      x %= fieldWidth;
+      field[x][y] = 2;
+    }
+  }
+  currentFigure = {
+    x : 0,
+    y : 0,
+    figureType : 7,
+    block : [
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]
+  };
+  window.requestAnimationFrame(drawStuff);
 }
 
 function moveFigure(figure, step) {
@@ -144,8 +204,6 @@ function drawStuff() {
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
-      if (currentFigure.x == column && currentFigure.y == row)
-        cellType = currentFigure.fugureType;
 
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
@@ -159,6 +217,16 @@ function drawStuff() {
         else if (cellType == 7) context.fillStyle = "rgba(180,200,70,0.5)";
       }
       context.fillRect(shift * column + column * blockSize, 16 + shift * row + row * blockSize, blockSize, blockSize);
+    }
+  }
+  for (let row = 0; row < currentFigure.block.length; row++) {
+    for (let column = 0; column < currentFigure.block[0].length; column++) {
+      let x = currentFigure.x + column;
+      let y = currentFigure.y + row;
+      x %= fieldWidth;
+      context.fillStyle = "rgba(100,200,240,0.9)";
+      if (currentFigure.block[row][column] == 1 && x < viewWidth)
+        context.fillRect(shift * x + x * blockSize, 16 + shift * y + y * blockSize, blockSize, blockSize);
     }
   }
   

@@ -52,7 +52,14 @@
         console.log(err.name + ": " + err.message);
       });
 
-      var constraints = { video : { deviceId: videoDevices[1] } };
+
+      let s="";
+      videoDevices.forEach(function(device) {
+          s += device + " | ";
+        });
+        alert(s);
+
+      var constraints = { video : { deviceId: videoDevices[0] } };
 
       navigator.mediaDevices.getUserMedia(constraints)
       .then(function(mediaStream) {
