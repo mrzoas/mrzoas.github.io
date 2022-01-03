@@ -42,10 +42,50 @@ let video;
 let canvas;
 let context;
 
+function initVideo() {
+  let s="Q:";
+  videoDevices.forEach(function(device) {
+      s += device + " | ";
+    });
+    alert(s);
+
+  var constraints = { video : { deviceId: videoDevices[0] } };
+
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then(function(mediaStream) {
+    var video = document.querySelector('video');
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function(e) {
+      video.play();
+    };
+  })
+  .catch(function(err) { console.log(err.name + ": " + err.message); });
+
+}
+
+let videoDevices = [];
 function init() {
   // video = document.getElementById("video");
   // video.width = document.body.clientWidth;
   // video.height = document.body.clientHeight;
+
+  //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
+  if (navigator.webkitGetUserMedia!=null) {
+    
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      devices.forEach(function(device) {
+        if (device.kind == "videoinput")
+          videoDevices.push(device.deviceId);
+      });
+      initVideo(videoDevices);
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+  } else {
+      alert("Без SSL документ не может получить доступ к веб-камере");
+  }
 
   
   
@@ -157,7 +197,7 @@ function checkPosition(figure) {
       let x = currentFigure.x + column;
       let y = currentFigure.y + row;
       x %= fieldWidth;
-      if (field[x][y] != 0 && currentFigure.block[row][column] != 0)
+      if (field[y][x] != 0 && currentFigure.block[row][column] != 0)
         return false;
       if (y >= fieldHeight && currentFigure.block[row][column] != 0)
         return false;
@@ -172,7 +212,7 @@ function stop(figure) {
       let x = currentFigure.x + column;
       let y = currentFigure.y + row;
       x %= fieldWidth;
-      field[x][y] = 2;
+      field[y][x] = currentFigure.figureType;
     }
   }
   currentFigure = {
