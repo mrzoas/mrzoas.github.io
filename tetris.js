@@ -153,8 +153,8 @@ function onOrientationChange(event) {
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     let dDir = direction - Math.floor(event.alpha / 360 * fieldWidth);
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    moveFigure(currentFigure, dDir);
-    document.getElementById("div").innerHTML = "             direction: " + direction;
+    moveFigure(currentFigure, 0);
+    document.getElementById("div").innerHTML = "_______direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
   
@@ -164,30 +164,10 @@ function onOrientationChange(event) {
 
 let figures = [
   [
-    [      [1,1,1],      [1,0,0]    ],
-    [      [1,1],      [0,1],      [0,1]    ],
-    [      [0,0,1],      [1,1,1]    ],
-    [      [1,0],      [1,0],      [1,1]    ]
+    [ [1,1,1], [1,0,0] ], [ [1,1], [0,1], [0,1] ], [ [0,0,1], [1,1,1] ], [ [1,0], [1,0], [1,1] ]
   ],
   [
-    [
-      [1,0,0],
-      [1,1,1]
-    ],
-    [
-      [1,1],
-      [1,0],
-      [1,0]
-    ],
-    [
-      [1,1,1],
-      [0,0,1]
-    ],
-    [
-      [0,1],
-      [0,1],
-      [1,1]
-    ]
+    [ [1,0,0], [1,1,1] ], [ [1,1], [1,0], [1,0] ], [ [1,1,1], [0,0,1] ], [ [0,1], [0,1], [1,1] ]
   ],
   [
     [
