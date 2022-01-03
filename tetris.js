@@ -12,8 +12,14 @@ field = field.split(":");
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
 let viewWidth = 20;
-let viewHeight = 10;
+let viewHeight = field.length;
 let blockSize = 32;
+
+let orient = {
+  alpha : 0,
+  beta : 0,
+  gamma : 0
+}
 
 function init() {
   // video = document.getElementById("video");
@@ -45,8 +51,17 @@ function init() {
   }
 
   function onOrientationChange(event) {
-    console.log(event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
-    document.getElementById("div").innerHTML = event.gamma + ".";
+    if (
+      Math.abs(orient.alpha - event.alpha) > 10 ||
+      Math.abs(orient.beta - event.beta) > 10 ||
+      Math.abs(orient.gamma - event.gamma) > 10
+    ) {
+      orient.alpha = event.alpha;
+      orient.beta = event.beta;
+      orient.gamma = event.gamma;
+      document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
+    }
+    
   }
   
   resizeCanvas();
