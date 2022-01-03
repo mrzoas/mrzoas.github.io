@@ -40,11 +40,8 @@
     //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
     if(navigator.webkitGetUserMedia!=null) { 
       
-      var constraints =
-      {
-        audio: false,
-        video: true
-      };
+      var constraints = { facingMode: { exact: "environment" } };
+      //var constraints = { deviceId: 0 };
 
       navigator.mediaDevices.getUserMedia(constraints)
       .then(function(mediaStream) {
