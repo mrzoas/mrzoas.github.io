@@ -45,6 +45,8 @@ function init() {
   // video = document.getElementById("video");
   // video.width = document.body.clientWidth;
   // video.height = document.body.clientHeight;
+
+  
   
 
   video = document.getElementById('video');
@@ -54,6 +56,7 @@ function init() {
   window.addEventListener('resize', resizeCanvas);
   window.addEventListener('devicemotion', onMotionChange);
   window.addEventListener('deviceorientation', onOrientationChange);
+  
 
   resizeCanvas();
 }
@@ -110,4 +113,15 @@ function drawStuff() {
     }
   }
   
+}
+
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
 }
