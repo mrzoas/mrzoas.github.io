@@ -17,7 +17,11 @@ canvas, video, div {
   top: 0;
 } /* To remove the scrollbars */
 
-input {
+video {
+  object-fit: cover;
+}
+
+div {
   z-index: 100;
   display: block;
   position: absolute;

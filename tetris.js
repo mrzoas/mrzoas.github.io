@@ -56,6 +56,7 @@ function init() {
   window.addEventListener('resize', resizeCanvas);
   window.addEventListener('devicemotion', onMotionChange);
   window.addEventListener('deviceorientation', onOrientationChange);
+  window.addEventListener('dblclick', toggleFullScreen);
   
 
   resizeCanvas();
@@ -67,10 +68,12 @@ function resizeCanvas() {
   canvas.height = window.innerHeight;
   video.width = window.innerWidth;
   video.height = window.innerHeight;
+  
+
 
   blockSize = Math.min(
-    (window.innerWidth - blockMargin * viewWidth)  / viewWidth,
-    (window.innerHeight - blockMargin * viewHeight)  / viewHeight
+    (window.innerWidth - blockMargin * (viewWidth - 1))  / viewWidth,
+    (window.innerHeight - blockMargin * (viewHeight - 1) - 16)  / viewHeight
   );
      
   drawStuff();
@@ -104,12 +107,12 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      if (field[row][(column + direction + fieldWidth) % fieldWidth] == "0") {
+      if (field[row][(column - direction + fieldWidth) % fieldWidth] == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
         context.fillStyle = "rgba(30,50,200,0.5)";
       }
-      context.fillRect(shift * column + column * blockSize, blockSize / 2 + shift * row + row * blockSize, blockSize, blockSize);
+      context.fillRect(shift * column + column * blockSize, 16 + shift * row + row * blockSize, blockSize, blockSize);
     }
   }
   
