@@ -21,7 +21,7 @@ video {
   object-fit: cover;
 }
 
-div {
+canvas {
   z-index: 100;
   display: block;
   position: absolute;

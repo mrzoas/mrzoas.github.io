@@ -5,15 +5,15 @@ let field = "" +
 "000111000111000000010001111100101100:" +
 "000011000110000000010001000000000000:" +
 "110001111100000000011111000000000000:" +
-"100100000000000000011111000000000000:" +
+"123456701234567000022221012345676543:" +
 "111110000000000000010001000000000000:" +
-"111110000000000000011111000000000000:" +
-"111110000000000000011111000000000000:" +
-"001010000000000000011111000000000000:" +
-"100110000010000000010001000000000000:" +
-"111110000000000000011111000000000000:" +
-"111110000000000000011111000000000000:" +
-"100010000000000000010001000000000000:" +
+"111110006000000000511111000000000000:" +
+"111110006000000000511111000000000000:" +
+"001010006000003344511111000000000000:" +
+"100110006666600000510001000000000000:" +
+"111110000000700000511111000000000000:" +
+"111110000000705555511111000000000000:" +
+"100010000000700000010001000000000000:" +
 "000001111000001000100000000000000000:" +
 "000000000000001000000100000000000000:" +
 "000000000000001000000000011000000000:" +
@@ -56,7 +56,7 @@ function init() {
   window.addEventListener('resize', resizeCanvas);
   window.addEventListener('devicemotion', onMotionChange);
   window.addEventListener('deviceorientation', onOrientationChange);
-  window.addEventListener('dblclick', toggleFullScreen);
+  document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
   
 
   resizeCanvas();
@@ -107,10 +107,18 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      if (field[row][(column - direction + fieldWidth) % fieldWidth] == "0") {
+      let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
+      if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
-        context.fillStyle = "rgba(30,50,200,0.5)";
+        if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
+        else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
+        else if (cellType == 3) context.fillStyle = "rgba(30,150,100,0.5)";
+        else if (cellType == 4) context.fillStyle = "rgba(120,50,50,0.5)";
+        else if (cellType == 5) context.fillStyle = "rgba(60,90,120,0.5)";
+        else if (cellType == 6) context.fillStyle = "rgba(30,170,40,0.5)";
+        else if (cellType == 7) context.fillStyle = "rgba(180,200,70,0.5)";
+
       }
       context.fillRect(shift * column + column * blockSize, 16 + shift * row + row * blockSize, blockSize, blockSize);
     }
