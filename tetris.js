@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 20;
+let viewWidth = 36;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -153,8 +153,23 @@ function onOrientationChange(event) {
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     let dDir = Math.floor(event.alpha / 360 * fieldWidth) - direction;
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    if (dDir < 0) moveLeft(currentFigure, -dDir);
-    if (dDir > 0) moveRight(currentFigure, dDir);
+    if (dDir < 0) {
+      while (dDir != 0) {
+        moveFigure(currentFigure, -1);
+        dDir++;
+        if (checkPosition(currentFigure))
+          moveFigure(currentFigure, 1);
+      }
+    }
+    if (dDir > 0) {
+      while (dDir != 0) {
+        moveFigure(currentFigure, 1);
+        dDir--;
+        if (checkPosition(currentFigure))
+          moveFigure(currentFigure, -1);
+      }
+    }
+
     document.getElementById("div").innerHTML = "_______direction: " + direction;
     //window.requestAnimationFrame(drawStuff);
   }
@@ -233,7 +248,7 @@ let figures = [
 ];
 
 let currentFigure = {
-  x : 0,
+  x : direction,
   y : 0,
   figureType : 0,
   blockType : 0,
@@ -316,7 +331,7 @@ function stop(figure) {
         field[y][x] = currentFigure.figureType + 1;
     }
   }
-  currentFigure.x = 0;
+  currentFigure.x = direction;
   currentFigure.y = 0;
   currentFigure.figureType = getRandomInt(0, figures.length);
   currentFigure.blockType = 0;
@@ -342,7 +357,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.1)";
+        context.fillStyle = "rgba(200,200,100,0.9)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
