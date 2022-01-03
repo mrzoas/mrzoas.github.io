@@ -42,14 +42,9 @@ let video;
 let canvas;
 let context;
 
-function initVideo() {
-  let s="Q:";
-  videoDevices.forEach(function(device) {
-      s += device + " | ";
-    });
-    alert(s);
+function initVideo(videoDevices) {
 
-  var constraints = { video : { deviceId: videoDevices[0] } };
+  var constraints = { video : { deviceId: videoDevices[videoDevices.length - 1] } };
 
   navigator.mediaDevices.getUserMedia(constraints)
   .then(function(mediaStream) {
@@ -63,7 +58,7 @@ function initVideo() {
 
 }
 
-let videoDevices = [];
+
 function init() {
   // video = document.getElementById("video");
   // video.width = document.body.clientWidth;
@@ -74,6 +69,7 @@ function init() {
     
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
+      let videoDevices = [];
       devices.forEach(function(device) {
         if (device.kind == "videoinput")
           videoDevices.push(device.deviceId);
@@ -152,9 +148,11 @@ function onOrientationChange(event) {
     orient.beta = event.beta;
     orient.gamma = event.gamma;
     //document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
+    let dDir = direction - Math.floor(event.alpha / 360 * fieldWidth);
     direction = Math.floor(event.alpha / 360 * fieldWidth);
+    moveFigure(currentFigure, dDir);
     document.getElementById("div").innerHTML = "             direction: " + direction;
-    window.requestAnimationFrame(drawStuff);
+    //window.requestAnimationFrame(drawStuff);
   }
   
 }
@@ -197,10 +195,11 @@ function checkPosition(figure) {
       let x = currentFigure.x + column;
       let y = currentFigure.y + row;
       x %= fieldWidth;
-      if (field[y][x] != 0 && currentFigure.block[row][column] != 0)
+      if (currentFigure.block[row][column] != 0 && y >= fieldHeight )
         return false;
-      if (y >= fieldHeight && currentFigure.block[row][column] != 0)
+      if (currentFigure.block[row][column] != 0 && field[y][x] != 0)
         return false;
+      
     }
   }
   return true;
@@ -212,7 +211,8 @@ function stop(figure) {
       let x = currentFigure.x + column;
       let y = currentFigure.y + row;
       x %= fieldWidth;
-      field[y][x] = currentFigure.figureType;
+      if (currentFigure.block[row][column] != 0)
+        field[y][x] = currentFigure.figureType;
     }
   }
   currentFigure = {
