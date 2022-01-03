@@ -90,6 +90,8 @@ function onOrientationChange(event) {
     orient.gamma = event.gamma;
     document.getElementById("div").innerHTML = "alpha=" + event.alpha + "<br>beta=" + event.beta + "<br>gamma=" + event.gamma;
     direction = event.alpha;
+    
+    drawStuff();
   }
   
 }
