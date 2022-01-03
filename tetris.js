@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  // if (navigator.webkitGetUserMedia!=null) {
+  if (navigator.webkitGetUserMedia!=null) {
     
-  //   navigator.mediaDevices.enumerateDevices()
-  //   .then(function(devices) {
-  //     let videoDevices = [];
-  //     devices.forEach(function(device) {
-  //       if (device.kind == "videoinput")
-  //         videoDevices.push(device.deviceId);
-  //     });
-  //     initVideo(videoDevices);
-  //   })
-  //   .catch(function(err) {
-  //     console.log(err.name + ": " + err.message);
-  //   });
-  // } else {
-  //     alert("Без SSL документ не может получить доступ к веб-камере");
-  // }
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      let videoDevices = [];
+      devices.forEach(function(device) {
+        if (device.kind == "videoinput")
+          videoDevices.push(device.deviceId);
+      });
+      initVideo(videoDevices);
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+  } else {
+      alert("Без SSL документ не может получить доступ к веб-камере");
+  }
 
   
   
