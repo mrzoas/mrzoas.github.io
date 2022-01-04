@@ -97,8 +97,8 @@ function init() {
   document.addEventListener('keydown', onKeyDown);
   document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
 
-  window.addEventListener("touchstart", touchstart, { passive: false });
-  window.addEventListener("touchend", touchend), { passive: false };
+  window.addEventListener("touchstart", touchstart);
+  window.addEventListener("touchend", touchend);
   
 
   resizeCanvas();
@@ -172,11 +172,11 @@ function resizeCanvas() {
 
 
 let motionFix = 0;
-let motionFixMax = 0.3;
+let motionFixMax = 0.2;
 function onMotionChange(e) {
-  let acc = e.accelerationIncludingGravity;
+  let acc = e.acceleration;
   let newAcc = Math.sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
-  if (Math.abs(motionFix - newAcc) > 0.8 * motionFixMax)
+  if (Math.abs(motionFix - newAcc) > 0.4 * motionFixMax)
   {
     moveDown(currentFigure);
     console.log(acc);
