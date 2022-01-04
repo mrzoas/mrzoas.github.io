@@ -5,14 +5,14 @@ let field = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,5,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,3,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,4,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,5,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,6,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 36;
+let viewWidth = 10;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -96,6 +96,9 @@ function init() {
   window.addEventListener('deviceorientation', onOrientationChange);
   document.addEventListener('keydown', onKeyDown);
   document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
+
+  window.addEventListener("touchstart", touchstart, false);
+  window.addEventListener("touchend", touchend, false);
   
 
   resizeCanvas();
@@ -107,6 +110,35 @@ function Tick() {
   moveDown(currentFigure);
   setTimeout(Tick, 1000);
 }
+
+//----------------
+var onlongtouch; 
+var timer;
+var touchduration = 800; //length of time we want the user to touch before we do something
+
+function touchstart(e) {
+    e.preventDefault();
+    if (!timer) {
+        timer = setTimeout(onlongtouch, touchduration);
+    }
+}
+
+function touchend() {
+    //stops short touches from firing the event
+    if (timer) {
+        clearTimeout(timer);
+        timer = null;
+    }
+}
+
+onlongtouch = function() { 
+    timer = null;
+    toggleFullScreen();
+};
+
+
+
+//----------
 
 function onKeyDown(event) {
   if (event.key == 'ArrowLeft') {
@@ -154,25 +186,24 @@ function onOrientationChange(event) {
     orient.gamma = event.gamma;
     
     let dDir = Math.floor((360 - event.alpha) / 360 * fieldWidth) - direction;
-    
     direction = Math.floor((360 - event.alpha) / 360 * fieldWidth);
-    // if (dDir < 0) {
-    //   while (dDir != 0) {
-    //     moveLeft(currentFigure);
-    //     dDir++;
-    //   }
-    // }
-    // if (dDir > 0) {
-    //   while (dDir != 0) {
-    //     moveRight(currentFigure);
-    //     dDir--;
-    //   }
-    // }
-    currentFigure.x = direction;
+    if (dDir < 0) {
+      while (dDir != 0) {
+        moveLeft(currentFigure);
+        dDir++;
+      }
+    }
+    if (dDir > 0) {
+      while (dDir != 0) {
+        moveRight(currentFigure);
+        dDir--;
+      }
+    }
+    //currentFigure.x = direction;
 
     document.getElementById("div").innerHTML = "alpha=" + Math.round(event.alpha) + "<br>beta=" + Math.round(event.beta) + "<br>gamma=" + Math.round(event.gamma);
     //document.getElementById("div").innerHTML = "_______direction: " + direction;
-    //window.requestAnimationFrame(drawStuff);
+    window.requestAnimationFrame(drawStuff);
   }
   
 }
@@ -358,7 +389,7 @@ function drawStuff() {
       let cellType = field[row][(column + direction + fieldWidth - viewWidth / 2) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.9)";
+        context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
