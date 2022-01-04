@@ -172,14 +172,19 @@ function resizeCanvas() {
 
 
 let motionFix = 0;
+let motionFixMax = 0.3;
 function onMotionChange(e) {
   let acc = e.accelerationIncludingGravity;
   let newAcc = Math.sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
-  if (Math.abs(motionFix - newAcc) > 0.2)
+  if (Math.abs(motionFix - newAcc) > 0.8 * motionFixMax)
   {
     moveDown(currentFigure);
     console.log(acc);
   }
+  if (newAcc > motionFixMax) {
+    motionFixMax = newAcc;
+  }
+  motionFixMax -= 0.01;
   motionFix = newAcc;
 }
 
