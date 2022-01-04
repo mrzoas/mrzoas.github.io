@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 36;
+let viewWidth = 10;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
