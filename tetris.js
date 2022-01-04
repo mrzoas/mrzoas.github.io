@@ -157,7 +157,7 @@ function onOrientationChange(event) {
     if (dDir < 0) {
       while (dDir != 0) {
         moveFigure(currentFigure, 1);
-        dDir--;
+        dDir++;
         if (checkPosition(currentFigure))
           moveFigure(currentFigure, -1);
       }
@@ -165,7 +165,7 @@ function onOrientationChange(event) {
     if (dDir > 0) {
       while (dDir != 0) {
         moveFigure(currentFigure, -1);
-        dDir++;
+        dDir--;
         if (checkPosition(currentFigure))
           moveFigure(currentFigure, 1);
       }
@@ -359,7 +359,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.1)";
+        context.fillStyle = "rgba(200,200,100,0.9)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
