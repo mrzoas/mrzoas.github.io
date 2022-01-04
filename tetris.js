@@ -355,7 +355,7 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      let cellType = field[row][(column + direction + fieldWidth) % fieldWidth];
+      let cellType = field[row][(column + direction + fieldWidth + viewWidth / 2) % fieldWidth];
 
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
@@ -373,7 +373,7 @@ function drawStuff() {
   }
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
-      let x = (currentFigure.x + column + direction + fieldWidth) % fieldWidth;
+      let x = (currentFigure.x + column + fieldWidth) % fieldWidth;
       let y = currentFigure.y + row;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
