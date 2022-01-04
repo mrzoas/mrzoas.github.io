@@ -176,7 +176,7 @@ let motionFixMax = 0.2;
 function onMotionChange(e) {
   let acc = e.acceleration;
   let newAcc = Math.sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
-  if (Math.abs(motionFix - newAcc) > 0.4 * motionFixMax)
+  if (Math.abs(motionFix - newAcc) > 0.8 * motionFixMax)
   {
     moveDown(currentFigure);
     console.log(acc);
