@@ -97,8 +97,8 @@ function init() {
   document.addEventListener('keydown', onKeyDown);
   document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
 
-  window.addEventListener("touchstart", touchstart, false);
-  window.addEventListener("touchend", touchend, false);
+  window.addEventListener("touchstart", touchstart, { passive: false });
+  window.addEventListener("touchend", touchend), { passive: false };
   
 
   resizeCanvas();
@@ -117,23 +117,24 @@ var timer;
 var touchduration = 800; //length of time we want the user to touch before we do something
 
 function touchstart(e) {
-    e.preventDefault();
-    if (!timer) {
-        timer = setTimeout(onlongtouch, touchduration);
-    }
+  e.preventDefault();
+  if (!timer) {
+      timer = setTimeout(onlongtouch, touchduration);
+  }
 }
 
 function touchend() {
     //stops short touches from firing the event
     if (timer) {
-        clearTimeout(timer);
-        timer = null;
+      turnRight(currentFigure);
+      clearTimeout(timer);
+      timer = null;
     }
 }
 
 onlongtouch = function() { 
-    timer = null;
-    toggleFullScreen();
+  timer = null;
+  toggleFullScreen();
 };
 
 
@@ -406,9 +407,16 @@ function drawStuff() {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
       let x = (currentFigure.x - direction + column + fieldWidth + viewWidth / 2) % fieldWidth;
       let y = currentFigure.y + row;
-      context.fillStyle = "rgba(100,200,240,0.9)";
-      if (currentFigure.block[row][column] == 1 && x < viewWidth)
+      if (currentFigure.figureType == 0) context.fillStyle = "rgba(200,100,10,0.6)";
+      else if (currentFigure.figureType == 1) context.fillStyle = "rgba(30,50,200,0.6)";
+      else if (currentFigure.figureType == 2) context.fillStyle = "rgba(30,150,100,0.6)";
+      else if (currentFigure.figureType == 3) context.fillStyle = "rgba(120,50,50,0.6)";
+      else if (currentFigure.figureType == 4) context.fillStyle = "rgba(60,90,120,0.6)";
+      else if (currentFigure.figureType == 5) context.fillStyle = "rgba(30,170,40,0.6)";
+      else if (currentFigure.figureType == 6) context.fillStyle = "rgba(180,200,70,0.6)";
+      if (currentFigure.block[row][column] == 1 && x < viewWidth) {
         context.fillRect(shift * x + x * blockSize, 16 + shift * y + y * blockSize, blockSize, blockSize);
+      }
     }
   }
   
