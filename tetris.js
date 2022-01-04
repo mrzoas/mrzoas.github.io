@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  // if (navigator.webkitGetUserMedia!=null) {
+  if (navigator.webkitGetUserMedia!=null) {
     
-  //   navigator.mediaDevices.enumerateDevices()
-  //   .then(function(devices) {
-  //     let videoDevices = [];
-  //     devices.forEach(function(device) {
-  //       if (device.kind == "videoinput")
-  //         videoDevices.push(device.deviceId);
-  //     });
-  //     initVideo(videoDevices);
-  //   })
-  //   .catch(function(err) {
-  //     console.log(err.name + ": " + err.message);
-  //   });
-  // } else {
-  //     alert("Без SSL документ не может получить доступ к веб-камере");
-  // }
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      let videoDevices = [];
+      devices.forEach(function(device) {
+        if (device.kind == "videoinput")
+          videoDevices.push(device.deviceId);
+      });
+      initVideo(videoDevices);
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+  } else {
+      alert("Без SSL документ не может получить доступ к веб-камере");
+  }
 
   
   
@@ -355,10 +355,10 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      let cellType = field[row][(column + direction + fieldWidth + viewWidth / 2) % fieldWidth];
+      let cellType = field[row][(column + direction + fieldWidth - viewWidth / 2) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.1)";
+        context.fillStyle = "rgba(200,200,100,0.9)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
@@ -373,7 +373,7 @@ function drawStuff() {
   }
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
-      let x = (currentFigure.x + column + fieldWidth) % fieldWidth;
+      let x = (currentFigure.x - direction + column + fieldWidth + viewWidth / 2) % fieldWidth;
       let y = currentFigure.y + row;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
