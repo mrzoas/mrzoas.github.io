@@ -12,18 +12,18 @@ let field = [
   [0,0,0,0,0,0,5,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,6,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,2,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,3,0,0,0,5,2,2,],
+  [0,0,0,3,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,7,4,0,0,0,7,4,4,3,6,6,5,5,6,1,],
+  [6,6,6,3,2,5,5,0,0,0,4,2,2,6,0,0,0,0,0,0,2,7,4,3,7,7,7,4,4,3,6,6,5,7,6,1,],
+  [6,1,3,3,2,5,5,0,0,4,4,5,5,6,0,0,0,0,0,0,2,4,4,3,5,5,1,1,2,3,1,1,7,7,6,1,],
+  [1,1,1,2,2,3,3,3,3,4,5,5,6,6,0,0,0,0,0,0,2,2,3,3,5,5,1,1,2,2,2,1,1,7,6,1,],
 ];
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 10;
+let viewWidth = 36;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -171,9 +171,16 @@ function resizeCanvas() {
 }
 
 
+let motionFix = 0;
 function onMotionChange(e) {
-  var ag = e.accelerationIncludingGravity;
-  //console.log(ag);
+  let acc = e.accelerationIncludingGravity;
+  let newAcc = Math.sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
+  if (Math.abs(motionFix - newAcc) > 0.2)
+  {
+    moveDown(currentFigure);
+    console.log(acc);
+  }
+  motionFix = newAcc;
 }
 
 function onOrientationChange(event) {
@@ -202,7 +209,7 @@ function onOrientationChange(event) {
     }
     //currentFigure.x = direction;
 
-    document.getElementById("div").innerHTML = "alpha=" + Math.round(event.alpha) + "<br>beta=" + Math.round(event.beta) + "<br>gamma=" + Math.round(event.gamma);
+    //document.getElementById("div").innerHTML = "alpha=" + Math.round(event.alpha) + "<br>beta=" + Math.round(event.beta) + "<br>gamma=" + Math.round(event.gamma);
     //document.getElementById("div").innerHTML = "_______direction: " + direction;
     window.requestAnimationFrame(drawStuff);
   }
@@ -364,6 +371,10 @@ function stop(figure) {
         field[y][x] = currentFigure.figureType + 1;
     }
   }
+
+  checkField();
+
+
   currentFigure.x = direction;
   currentFigure.y = 0;
   currentFigure.figureType = getRandomInt(0, figures.length);
@@ -379,9 +390,37 @@ function moveFigure(figure, step) {
   window.requestAnimationFrame(drawStuff);
 }
 
+function checkField() {
+  for (let row = fieldHeight - 1; row >= 0; row--) {
+    let pointInLine = 0;
+    for (let column = 0; column < fieldWidth; column++) {
+      if (field[row][column] != 0)
+        pointInLine++;
+    }
+    if (pointInLine == fieldWidth) {
+      score++;
+      delLine(row);
+    }
+  }
+}
 
+function delLine(nLine) {
+  for (let row = nLine; row > 0; row--) {
+    for (let column = 0; column < fieldWidth; column++) {
+      field[row][column] = field[row - 1][column];
+    }
+  }
+  for (let column = 0; column < fieldWidth; column++) {
+    field[0][column] = 0;
+  }
+}
+
+let score = 0;
 
 function drawStuff() {
+  document.getElementById("div").innerHTML = "Score: " + score;
+
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   let shift = blockMargin;
