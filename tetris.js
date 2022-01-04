@@ -134,7 +134,7 @@ function touchend() {
 
 onlongtouch = function() { 
   timer = null;
-  toggleFullScreen();
+  moveDown(currentFigure,20);
 };
 
 
