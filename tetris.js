@@ -156,18 +156,18 @@ function onOrientationChange(event) {
     direction = Math.floor(event.alpha / 360 * fieldWidth);
     if (dDir < 0) {
       while (dDir != 0) {
-        moveFigure(currentFigure, -1);
-        dDir++;
-        if (checkPosition(currentFigure))
-          moveFigure(currentFigure, 1);
-      }
-    }
-    if (dDir > 0) {
-      while (dDir != 0) {
         moveFigure(currentFigure, 1);
         dDir--;
         if (checkPosition(currentFigure))
           moveFigure(currentFigure, -1);
+      }
+    }
+    if (dDir > 0) {
+      while (dDir != 0) {
+        moveFigure(currentFigure, -1);
+        dDir++;
+        if (checkPosition(currentFigure))
+          moveFigure(currentFigure, 1);
       }
     }
 
