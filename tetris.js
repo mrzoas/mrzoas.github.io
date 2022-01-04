@@ -359,7 +359,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.1)";
+        context.fillStyle = "rgba(200,200,100,0.9)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
@@ -376,7 +376,7 @@ function drawStuff() {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
       let x = currentFigure.x + column - direction;
       let y = currentFigure.y + row;
-      x %= fieldWidth;
+      x = (x + fieldWidth) % fieldWidth;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
         context.fillRect(shift * x + x * blockSize, 16 + shift * y + y * blockSize, blockSize, blockSize);
