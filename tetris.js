@@ -97,8 +97,8 @@ function init() {
   document.addEventListener('keydown', onKeyDown);
   document.getElementById("canvas").addEventListener('dblclick', toggleFullScreen);
 
-  window.addEventListener("touchstart", touchstart);
-  window.addEventListener("touchend", touchend);
+  window.addEventListener("touchstart", touchstart, { passive: false });
+  window.addEventListener("touchend", touchend, { passive: false });
   
 
   resizeCanvas();
