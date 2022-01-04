@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 20;
+let viewWidth = 36;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  if (navigator.webkitGetUserMedia!=null) {
+  // if (navigator.webkitGetUserMedia!=null) {
     
-    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-      let videoDevices = [];
-      devices.forEach(function(device) {
-        if (device.kind == "videoinput")
-          videoDevices.push(device.deviceId);
-      });
-      initVideo(videoDevices);
-    })
-    .catch(function(err) {
-      console.log(err.name + ": " + err.message);
-    });
-  } else {
-      alert("Без SSL документ не может получить доступ к веб-камере");
-  }
+  //   navigator.mediaDevices.enumerateDevices()
+  //   .then(function(devices) {
+  //     let videoDevices = [];
+  //     devices.forEach(function(device) {
+  //       if (device.kind == "videoinput")
+  //         videoDevices.push(device.deviceId);
+  //     });
+  //     initVideo(videoDevices);
+  //   })
+  //   .catch(function(err) {
+  //     console.log(err.name + ": " + err.message);
+  //   });
+  // } else {
+  //     alert("Без SSL документ не может получить доступ к веб-камере");
+  // }
 
   
   
@@ -154,22 +154,19 @@ function onOrientationChange(event) {
     let dDir = Math.floor(event.alpha / 360 * fieldWidth) - direction;
     
     direction = Math.floor(event.alpha / 360 * fieldWidth);
-    if (dDir < 0) {
-      while (dDir != 0) {
-        moveFigure(currentFigure, 1);
-        dDir++;
-        if (checkPosition(currentFigure))
-          moveFigure(currentFigure, -1);
-      }
-    }
-    if (dDir > 0) {
-      while (dDir != 0) {
-        moveFigure(currentFigure, -1);
-        dDir--;
-        if (checkPosition(currentFigure))
-          moveFigure(currentFigure, 1);
-      }
-    }
+    // if (dDir < 0) {
+    //   while (dDir != 0) {
+    //     moveLeft(currentFigure);
+    //     dDir++;
+    //   }
+    // }
+    // if (dDir > 0) {
+    //   while (dDir != 0) {
+    //     moveRight(currentFigure);
+    //     dDir--;
+    //   }
+    // }
+    currentFigure.x = direction;
 
     document.getElementById("div").innerHTML = "alpha=" + Math.round(event.alpha) + "<br>beta=" + Math.round(event.beta) + "<br>gamma=" + Math.round(event.gamma);
     //document.getElementById("div").innerHTML = "_______direction: " + direction;
@@ -359,7 +356,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.9)";
+        context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
@@ -374,9 +371,8 @@ function drawStuff() {
   }
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
-      let x = currentFigure.x + column - direction;
+      let x = (currentFigure.x + column - direction + fieldWidth) % fieldWidth;
       let y = currentFigure.y + row;
-      x = (x + fieldWidth) % fieldWidth;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
         context.fillRect(shift * x + x * blockSize, 16 + shift * y + y * blockSize, blockSize, blockSize);
