@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 20;
+let viewWidth = 36;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -156,18 +156,18 @@ function onOrientationChange(event) {
     direction = Math.floor(event.alpha / 360 * fieldWidth);
     if (dDir < 0) {
       while (dDir != 0) {
-        moveFigure(currentFigure, 1);
-        dDir--;
-        if (checkPosition(currentFigure))
-          moveFigure(currentFigure, -1);
-      }
-    }
-    if (dDir > 0) {
-      while (dDir != 0) {
         moveFigure(currentFigure, -1);
         dDir++;
         if (checkPosition(currentFigure))
           moveFigure(currentFigure, 1);
+      }
+    }
+    if (dDir > 0) {
+      while (dDir != 0) {
+        moveFigure(currentFigure, 1);
+        dDir--;
+        if (checkPosition(currentFigure))
+          moveFigure(currentFigure, -1);
       }
     }
 
@@ -376,7 +376,7 @@ function drawStuff() {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
       let x = currentFigure.x + column - direction;
       let y = currentFigure.y + row;
-      x = (x + fieldWidth) % fieldWidth;
+      x %= fieldWidth;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
         context.fillRect(shift * x + x * blockSize, 16 + shift * y + y * blockSize, blockSize, blockSize);
