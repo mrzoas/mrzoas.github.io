@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 36;
+let viewWidth = 20;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -359,7 +359,7 @@ function drawStuff() {
       let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
-        context.fillStyle = "rgba(200,200,100,0.9)";
+        context.fillStyle = "rgba(200,200,100,0.1)";
       } else {
         if (cellType == 1) context.fillStyle = "rgba(200,100,10,0.5)";
         else if (cellType == 2) context.fillStyle = "rgba(30,50,200,0.5)";
