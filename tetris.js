@@ -145,15 +145,17 @@ function onMotionChange(e) {
 
 function onOrientationChange(event) {
   if (
-    Math.abs(orient.alpha - event.alpha) > 6
+    Math.abs(orient.alpha - event.alpha) > 6 ||
+    Math.abs(orient.beta - event.beta) > 6 ||
+    Math.abs(orient.gamma - event.gammma) > 6
   ) {
     orient.alpha = event.alpha;
     orient.beta = event.beta;
     orient.gamma = event.gamma;
     
-    let dDir = Math.floor(event.alpha / 360 * fieldWidth) - direction;
+    let dDir = Math.floor((360 - event.alpha) / 360 * fieldWidth) - direction;
     
-    direction = Math.floor(event.alpha / 360 * fieldWidth);
+    direction = Math.floor((360 - event.alpha) / 360 * fieldWidth);
     // if (dDir < 0) {
     //   while (dDir != 0) {
     //     moveLeft(currentFigure);
@@ -353,7 +355,7 @@ function drawStuff() {
   let shift = blockMargin;
   for (let row = 0; row < viewHeight; row++) {
     for (let column = 0; column < viewWidth; column++) {
-      let cellType = field[row][(column - direction + fieldWidth) % fieldWidth];
+      let cellType = field[row][(column + direction + fieldWidth) % fieldWidth];
 
       if (cellType == "0") {
         context.fillStyle = "rgba(200,200,100,0.1)";
@@ -371,7 +373,7 @@ function drawStuff() {
   }
   for (let row = 0; row < currentFigure.block.length; row++) {
     for (let column = 0; column < currentFigure.block[0].length; column++) {
-      let x = (currentFigure.x + column - direction + fieldWidth) % fieldWidth;
+      let x = (currentFigure.x + column + direction + fieldWidth) % fieldWidth;
       let y = currentFigure.y + row;
       context.fillStyle = "rgba(100,200,240,0.9)";
       if (currentFigure.block[row][column] == 1 && x < viewWidth)
