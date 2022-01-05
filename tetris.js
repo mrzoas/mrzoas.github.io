@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 16;
+let viewWidth = 10;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -106,9 +106,11 @@ function init() {
   Tick();
 }
 
+let gameTimer;
+let gameSpeed = 1000;
 function Tick() {
   moveDown(currentFigure);
-  setTimeout(Tick, 1000);
+  gameTimer = setTimeout(Tick, gameSpeed);
 }
 
 //----------------
@@ -126,16 +128,24 @@ function touchstart(e) {
 }
 
 function touchend(e) {
-  if (swipeLeft(e.changedTouches[0])) {
-    document.getElementById("video").style.display='none';
-    video.pause();
-  } else if (swipeRight(e.changedTouches[0])) {
-    document.getElementById("video").style.display='';
-    video.play();
-  } else if (swipeUp(e.changedTouches[0])) {
-    toggleFullScreen();
-  } else if (swipeDown(e.changedTouches[0])) {
-    moveDown(currentFigure,20);
+  let swipeLen = vectorLength(touch.pageX, touch.pageY, e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+  if (swipeLen > 0.1 * viewHeight) {
+    switch(swipeDirection(touch, e.changedTouches[0])) {
+      case "left":
+        document.getElementById("video").style.display='none';
+        video.pause();
+        break;
+      case "right":
+        document.getElementById("video").style.display='';
+        video.play();
+        break;
+      case "up":
+        toggleFullScreen();
+        break;
+      case "down":
+        moveDown(currentFigure, fieldHeight);
+        break;
+    }
   } else if (timer) {
     turnRight(currentFigure); // короткое нажатие
   }
@@ -143,25 +153,37 @@ function touchend(e) {
   timer = null;
 }
 
-function swipeUp(endTouch) {
-  return touch.pageY - endTouch.pageY > 20;
+function vectorLength(p1x, p1y, p2x, p2y) {
+  return Math.sqrt((p1x - p2x)**2 + (p1y - p2y)**2);
 }
 
-function swipeDown(endTouch) {
-  return touch.pageY - endTouch.pageY < -20;
+function swipeDirection(startTouch, endTouch) {
+  let swipeLen = vectorLength(startTouch.pageX, startTouch.pageY, endTouch.pageX, endTouch.pageY);
+  let horizontal = endTouch.pageX - startTouch.pageX;
+  let vertical = endTouch.pageY - startTouch.pageY;
+  if (Math.abs(horizontal/swipeLen) > 0.5)
+    if (horizontal > 0)
+      return "right";
+    else
+      return "left";
+  if (Math.abs(vertical/swipeLen) > 0.5)
+    if (vertical > 0)
+      return "down";
+    else
+      return "up";
+  return "none";
 }
 
-function swipeRight(endTouch) {
-  return touch.pageX - endTouch.pageX > 20;
-}
-
-function swipeLeft(endTouch) {
-  return touch.pageX - endTouch.pageX < -20;
-}
 
 onlongtouch = function() { 
   timer = null;
-  moveDown(currentFigure,20); // долгое нажатие
+  // долгое нажатие
+  if (gameTimer != null) {
+    clearTimeout(gameTimer);
+    gameTimer = null;
+  } else {
+    Tick();
+  }
 };
 //----------
 
