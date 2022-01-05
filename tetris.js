@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  // if (navigator.webkitGetUserMedia!=null) {
+  if (navigator.webkitGetUserMedia!=null) {
     
-  //   navigator.mediaDevices.enumerateDevices()
-  //   .then(function(devices) {
-  //     let videoDevices = [];
-  //     devices.forEach(function(device) {
-  //       if (device.kind == "videoinput")
-  //         videoDevices.push(device.deviceId);
-  //     });
-  //     initVideo(videoDevices);
-  //   })
-  //   .catch(function(err) {
-  //     console.log(err.name + ": " + err.message);
-  //   });
-  // } else {
-  //     alert("Без SSL документ не может получить доступ к веб-камере");
-  // }
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      let videoDevices = [];
+      devices.forEach(function(device) {
+        if (device.kind == "videoinput")
+          videoDevices.push(device.deviceId);
+      });
+      initVideo(videoDevices);
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+  } else {
+      alert("Без SSL документ не может получить доступ к веб-камере");
+  }
 
   
   
@@ -126,15 +126,37 @@ function touchstart(e) {
 }
 
 function touchend(e) {
-  if (touch.pageY - e.changedTouches[0].pageY > 20) {
-    toggleFullScreen(); // свайп вверх
-  } else if (touch.pageY - e.changedTouches[0].pageY < -20) {
-    moveDown(currentFigure,20); // свайп вниз
+  if (swipeLeft(e.changedTouches[0])) {
+    document.getElementById("video").style.display='none';
+    video.pause();
+  } else if (swipeRight(e.changedTouches[0])) {
+    document.getElementById("video").style.display='';
+    video.play();
+  } else if (swipeUp(e.changedTouches[0])) {
+    toggleFullScreen();
+  } else if (swipeDown(e.changedTouches[0])) {
+    moveDown(currentFigure,20);
   } else if (timer) {
     turnRight(currentFigure); // короткое нажатие
   }
   clearTimeout(timer);
   timer = null;
+}
+
+function swipeUp(endTouch) {
+  return touch.pageY - endTouch.pageY > 20;
+}
+
+function swipeDown(endTouch) {
+  return touch.pageY - endTouch.pageY < -20;
+}
+
+function swipeRight(endTouch) {
+  return touch.pageX - endTouch.pageX > 20;
+}
+
+function swipeLeft(endTouch) {
+  return touch.pageX - endTouch.pageX < -20;
 }
 
 onlongtouch = function() { 
@@ -173,21 +195,8 @@ function resizeCanvas() {
 }
 
 
-let motionFix = 0;
-let motionFixMax = 0.2;
 function onMotionChange(e) {
-  // let acc = e.acceleration;
-  // let newAcc = Math.sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
-  // if (Math.abs(motionFix - newAcc) > 0.9 * motionFixMax)
-  // {
-  //   moveDown(currentFigure);
-  //   console.log(acc);
-  // }
-  // if (newAcc > motionFixMax) {
-  //   motionFixMax = newAcc;
-  // }
-  // motionFixMax -= 0.01;
-  // motionFix = newAcc;
+  let acc = e.acceleration;
 }
 
 function onOrientationChange(event) {
@@ -201,6 +210,9 @@ function onOrientationChange(event) {
     orient.gamma = event.gamma;
     
     let dDir = Math.floor((360 - event.alpha) / 360 * fieldWidth) - direction;
+    if (dDir > 180) dDir = dDir - 360;
+    if (dDir < -180) dDir = dDir + 360;
+
     direction = Math.floor((360 - event.alpha) / 360 * fieldWidth);
     if (dDir < 0) {
       while (dDir != 0) {
