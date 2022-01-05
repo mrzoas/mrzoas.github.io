@@ -23,7 +23,7 @@ let field = [
 
 let fieldWidth = field[0].length;
 let fieldHeight = field.length;
-let viewWidth = 10;
+let viewWidth = 16;
 let viewHeight = field.length;
 let blockMargin = 3;
 let blockSize = Math.min(
@@ -66,23 +66,23 @@ function init() {
   // video.height = document.body.clientHeight;
 
   //https://developer.mozilla.org/ru/docs/Web/API/MediaDevices/getUserMedia
-  if (navigator.webkitGetUserMedia!=null) {
+  // if (navigator.webkitGetUserMedia!=null) {
     
-    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-      let videoDevices = [];
-      devices.forEach(function(device) {
-        if (device.kind == "videoinput")
-          videoDevices.push(device.deviceId);
-      });
-      initVideo(videoDevices);
-    })
-    .catch(function(err) {
-      console.log(err.name + ": " + err.message);
-    });
-  } else {
-      alert("Без SSL документ не может получить доступ к веб-камере");
-  }
+  //   navigator.mediaDevices.enumerateDevices()
+  //   .then(function(devices) {
+  //     let videoDevices = [];
+  //     devices.forEach(function(device) {
+  //       if (device.kind == "videoinput")
+  //         videoDevices.push(device.deviceId);
+  //     });
+  //     initVideo(videoDevices);
+  //   })
+  //   .catch(function(err) {
+  //     console.log(err.name + ": " + err.message);
+  //   });
+  // } else {
+  //     alert("Без SSL документ не может получить доступ к веб-камере");
+  // }
 
   
   
@@ -112,33 +112,35 @@ function Tick() {
 }
 
 //----------------
-var onlongtouch; 
-var timer;
-var touchduration = 800; //length of time we want the user to touch before we do something
+let onlongtouch; 
+let timer;
+let touchduration = 800;
+let touch = { pageX : 0, pageY : 0 };
 
 function touchstart(e) {
   e.preventDefault();
   if (!timer) {
-      timer = setTimeout(onlongtouch, touchduration);
+    timer = setTimeout(onlongtouch, touchduration);
+    touch = e.changedTouches[0];
   }
 }
 
-function touchend() {
-    //stops short touches from firing the event
-    if (timer) {
-      turnRight(currentFigure);
-      clearTimeout(timer);
-      timer = null;
-    }
+function touchend(e) {
+  if (touch.pageY - e.changedTouches[0].pageY > 20) {
+    toggleFullScreen(); // свайп вверх
+  } else if (touch.pageY - e.changedTouches[0].pageY < -20) {
+    moveDown(currentFigure,20); // свайп вниз
+  } else if (timer) {
+    turnRight(currentFigure); // короткое нажатие
+  }
+  clearTimeout(timer);
+  timer = null;
 }
 
 onlongtouch = function() { 
   timer = null;
-  moveDown(currentFigure,20);
+  moveDown(currentFigure,20); // долгое нажатие
 };
-
-
-
 //----------
 
 function onKeyDown(event) {
@@ -335,11 +337,14 @@ function turnRight(figure) {
 }
 
 function moveDown(figure, step = 1) {
-  figure.y += 1;
-  if (checkPosition(figure) != true) {
-    figure.y -= 1;
-    stop(figure);
-  }    
+  while (step--) {
+    figure.y += 1;
+    if (checkPosition(figure) != true) {
+      figure.y -= 1;
+      stop(figure);
+      break;
+    }    
+  }
   window.requestAnimationFrame(drawStuff);
 }
 
