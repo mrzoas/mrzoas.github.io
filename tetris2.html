@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="./tetris2.css">
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+
+  <script>
+    window.onload = function () {
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", "tetris2.js")
+      xhr.onload = function () {
+        if (this.status != 200 || this.readyState != 4)
+          return;
+        let scriptJS = document.createElement("script");
+        scriptJS.innerHTML = this.responseText;
+        document.head.append(scriptJS);
+
+        init();
+      };
+      xhr.send();
+    };
+  </script>
+
+</head>
+
+<body oncontextmenu="return false;">
+  <canvas id="canvas"></canvas>
+  <div id="panel" class="panel">
+    <p>
+      <input type="checkbox" id="inputStroke" onchange="applySetting();"/>
+      <label>Обводка</label>
+    </p>
+    <p>
+      <input type="checkbox" id="inputLeftRight" onchange="applySetting();"/>
+      <label>Реверс кнопок влево/вправо</label>
+    </p>
+    <p>
+      <input type="number" step="0.05" style="width: 4em;" id="inputPartOfInnerCircle" onchange="applySetting();">
+      <label>Доля пространства внутреннего круга</label>
+    </p>
+    <p>
+      <input type="number" step="1" style="width: 4em;" id="inputBlockMargin" onchange="applySetting();"/>
+      <label>Промежуток между ячейками</label>
+    </p>
+    <p>
+      <input type="number" step="0.01" style="width: 4em;" id="inputRingWidthStep" onchange="applySetting();"/>
+      <label>Множитель толщины колец</label>
+    </p>
+    <p>
+      <input type="button" value="Старт/стоп" onclick="onlongtouch();"/>
+    </p>
+  </div>
+</body>
+
+</html>
