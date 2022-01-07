@@ -444,6 +444,7 @@ function checkField() {
     if (pointInLine == fieldWidth) {
       score++;
       delLine(row);
+      row++;
     }
   }
 }
