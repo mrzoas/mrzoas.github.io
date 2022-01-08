@@ -471,7 +471,8 @@ function checkField() {
         pointInLine++;
     }
     if (pointInLine == fieldWidth) {
-      score++;
+      lines++;
+      score += fieldHeight - row;
       delLine(row);
       row++;
     }
@@ -490,6 +491,7 @@ function delLine(nLine) {
 }
 
 let score = 0;
+let lines = 0;
 
 let viewField;
 function getViewField() {
@@ -610,7 +612,9 @@ function drawStuff() {
   context.font = innerCircleRadius/4 + "px Arial";
   context.textAlign = "left";
   context.textBaseline = "middle";
+  context.strokeStyle = "rgba(200,200,200,0.6)";
   context.strokeText("Score: " + score, x - innerCircleRadius * 0.6, y - innerCircleRadius * 0.5, innerCircleRadius);
+  context.strokeText("Lines: " + lines, x - innerCircleRadius * 0.6, y + innerCircleRadius * 0.5, innerCircleRadius);
 }
 
 
