@@ -196,6 +196,8 @@ function onKeyDown(event) {
     moveDown(currentFigure);
   } else if (event.key == 'ArrowUp') {
     turnLeft(currentFigure);
+  } else if (event.code == 'Space') {
+    onlongtouch();
   }
 }
 
@@ -381,7 +383,7 @@ function turnRight(figure) {
   figure.blockType = (figure.blockType + 1) % figures[figure.figureType].length;
   figure.block = figures[figure.figureType][figure.blockType];
   if (checkPosition(figure) != true) {
-    figure.blockType = (figure.blockType - 1 + figures[figure.figureType].length) % figures[fugure.figureType].length;
+    figure.blockType = (figure.blockType - 1 + figures[figure.figureType].length) % figures[figure.figureType].length;
     figure.block = figures[figure.figureType][figure.blockType];
   }
   window.requestAnimationFrame(drawStuff);
